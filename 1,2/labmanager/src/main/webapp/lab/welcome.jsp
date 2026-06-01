@@ -1,80 +1,57 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*"%>
-
 <html>
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<title>Lab Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>연구실 관리 시스템 - 메인</title>
 </head>
 <body>
-
-<jsp:include page="menu.jsp"/>
-
-<div class="jumbotron">
-	<div class="container">
-		<h1 class="display-4">연구실 랩원 관리 시스템</h1>
-		<p class="lead">연구실 구성원, 프로젝트, 공지사항을 관리하는 웹 시스템입니다.</p>
-	</div>
-</div>
-
-<div class="container">
-	<h3>연구실 소개</h3>
-	<p>
-		본 연구실은 AI·SW 기반 연구와 프로젝트를 수행하며,
-		랩원 정보와 연구 활동을 체계적으로 관리합니다.
-	</p>
-
-	<hr>
-
-	<h3>최근 공지사항</h3>
-
-	<ul class="list-group">
-	<%
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-
-	String url = "jdbc:h2:tcp://localhost/~/bookmarketdb";
-	String user = "user1";
-	String dbPassword = "1234";
-
-	try {
-		Class.forName("org.h2.Driver");
-		conn = DriverManager.getConnection(url, user, dbPassword);
-
-		String sql = "SELECT * FROM notices ORDER BY notice_id DESC LIMIT 3";
-		pstmt = conn.prepareStatement(sql);
-		rs = pstmt.executeQuery();
-
-		while(rs.next()) {
-	%>
-			<li class="list-group-item">
-				<b><%=rs.getString("title")%></b>
-				<br>
-				<small>작성자: <%=rs.getString("writer")%> | 작성일: <%=rs.getDate("created_at")%></small>
-			</li>
-	<%
-		}
-	} catch(Exception e) {
-		e.printStackTrace();
-	%>
-		<li class="list-group-item">공지사항을 불러오는 중 오류가 발생했습니다.</li>
-	<%
-	} finally {
-		if(rs != null) rs.close();
-		if(pstmt != null) pstmt.close();
-		if(conn != null) conn.close();
-	}
-	%>
-	</ul>
-
-	<hr>
-
-	<a href="login.jsp" class="btn btn-primary">로그인</a>
-	<a href="join.jsp" class="btn btn-success">회원가입</a>
-</div>
-
-<jsp:include page="footer.jsp"/>
-
+    <jsp:include page="menu.jsp"/>
+    
+    <div class="jumbotron">
+        <div class="container text-center">
+            <h2 class="display-4">AI & SW 연구실에 오신 것을 환영합니다</h2>
+            <p class="lead mt-3">최신 인공지능 기술과 소프트웨어 엔지니어링을 연구하는 공간입니다.</p>
+            <div class="mt-4">
+                <a class="btn btn-primary btn-lg" href="/exercise/labcontrol?action=login" role="button">로그인</a>
+                <a class="btn btn-outline-secondary btn-lg" href="/exercise/labcontrol?action=register" role="button">회원가입</a>
+            </div>
+        </div>
+    </div>  
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h4 class="mb-3">최근 공지사항</h4>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="#" class="text-dark">이번 주 전체 랩미팅 일정 안내</a>
+                        <span class="badge badge-primary badge-pill">New</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="#" class="text-dark">서버실 출입 및 GPU 사용 수칙 개정</a>
+                        <span class="text-muted small">2026-05-28</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="#" class="text-dark">하계 학술대회 논문 제출 기한 리마인드</a>
+                        <span class="text-muted small">2026-05-25</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="col-md-4">
+                <h4 class="mb-3">Quick Links</h4>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">프로젝트 현황</h5>
+                        <p class="card-text">현재 진행 중인 연구실 프로젝트와 참여 인원을 확인하세요.</p>
+                        <a href="#" class="btn btn-sm btn-info">프로젝트 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>  
+    
+    <jsp:include page="footer.jsp" />
 </body>
 </html>
